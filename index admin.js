@@ -1,21 +1,19 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const deleteButtons = document.querySelectorAll(".delete-btn");
-  deleteButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const productId = this.getAttribute("data-id");
-      deleteProduct(productId);
-    });
-  });
-});
+const addAdminEl = document.getElementById("add-admin");
 
-function deleteProduct(productId) {
-  fetch(`/delete-product/${productId}`, { method: "DELETE" })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        alert("Mahsulot o'chirildi");
-        location.reload();
-      }
-    })
-    .catch((error) => console.error("Xatolik yuz berdi:", error));
-}
+addAdminEl.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = new FormData(e.target);
+
+  try {
+    const res = await fetch("http://localhost:5000/products", {
+      method: "POST",
+      body: form,
+    });
+    console.log(res.status);
+
+    const data = await res.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+});
